@@ -12,6 +12,10 @@ import Stack from "@mui/material/Stack";
 import SearchIcon from "@mui/icons-material/Search";
 import "./Search.css";
 
+// function SearchForm() {
+
+// }
+
 function Search() {
     interface Member {
         name: string;
@@ -50,6 +54,11 @@ function Search() {
     const submit = (values: object) => {
         console.log("form submitted");
         console.log({ values });
+        setIsLoading(true);
+        fetch("http://localhost:4000/search")
+            .then((res) => res.json())
+            .then((res) => setData(res))
+            .then(() => setIsLoading(false));
     };
 
     if (error) {
@@ -133,6 +142,12 @@ function Search() {
                         </Form>
                     )}
                 </Formik>
+                {/* <Container id="search-results">
+                    <p>{if (loading) return "Loading..."
+                    else return data}</p>
+                    if (loading) <p>Loading...</p>
+                    else <p>{data}</p>
+                </Container> */}
             </Container>
         );
     }
