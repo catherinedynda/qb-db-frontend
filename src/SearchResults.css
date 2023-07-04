@@ -1,0 +1,21 @@
+.results {
+    padding: 8px;
+    margin: 4px;
+    text-align: left;
+    background: none;
+    background-color: #0000;
+}
+
+.timestamp {
+    text-align: right;
+    float: right;
+    color: slategray;
+}
+
+img {
+    height: 50px;
+}
+
+.MuiPaper-outlined {
+    background-color: #000;
+}

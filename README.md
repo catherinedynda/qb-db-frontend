@@ -11,10 +11,21 @@ Make sure the backend is running. Also have the right URLs for it in the fronten
 # Roadmap
 
 -   [ ] Hook up to running actual searches
-    -   [ ] Fix whatever's going on w/ displaying the data and having different components linked
-    -   [ ] Find a way to implement a loading state while query is loading? Also error state if it fails?
+
+    -   [x] Fix whatever's going on w/ displaying the data and having different components linked
+    -   [x] Loading state
+    -   [ ] Error state?
+    -   [ ] Don't show 0 results on initial load
+
+-   [ ] Pagination for fetched quotes
 -   [ ] Make display for fetched quotes
+    -   [x] Basic display
+    -   [x] Correctly sized avatar
+    -   [ ] Show EST timezone on timestamps?
+    -   [ ] Button to click that will fetch likes for that message
 -   [ ] Complete desired parts of form
+    -   [ ] Date picker (from date to date?)
+    -   [ ] More thorough and/or of different elements?
 -   [ ] Think more about design
     -   [ ] Fix stuff running into each other, make it more of a responsive grid?
 -   [ ] Make stats area? Separate page of app?
