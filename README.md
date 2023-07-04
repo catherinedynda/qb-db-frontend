@@ -11,6 +11,8 @@ Make sure the backend is running. Also have the right URLs for it in the fronten
 # Roadmap
 
 -   [ ] Hook up to running actual searches
+    -   [ ] Fix whatever's going on w/ displaying the data and having different components linked
+    -   [ ] Find a way to implement a loading state while query is loading? Also error state if it fails?
 -   [ ] Make display for fetched quotes
 -   [ ] Complete desired parts of form
 -   [ ] Think more about design

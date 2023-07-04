@@ -12,8 +12,35 @@ import Stack from "@mui/material/Stack";
 import SearchIcon from "@mui/icons-material/Search";
 import "./Search.css";
 
-// function SearchForm() {
+// THIS NEEDS TO BE A SEPARATE GUY SINCE IT WON'T LET ME DO IF STATEMENTS
+// IN THE RETURN BUT I KINDA WANT THERE TO BE A LOADING STATE BUT IT WON'T
+// UPDATE WHEN THE PARENT STATE UPDATES AND I AM ANGY THAT'S LITERALLY ITS JOB
+// OK WE'RE GONNA FIGURE OUT LOADING LATER AND JUST GET RESULTS SHOWING NOW
+// function SearchResults(loading: boolean, data: any) {
+// function SearchResults(props: any) {
+//     const loading = props.loading;
+//     const data = props.data;
 
+//     console.log(`loading: ${loading}`);
+//     console.log(`data: ${data}`);
+
+//     if (loading) {
+//         return (
+//             <Container>
+//                 {/* TODO: add a spinny thing or something */}
+//                 <p key={props.loading}>Loading...</p>
+//             </Container>
+//         );
+//     } else {
+//         return (
+//             <Container>
+//                 {/* TODO: we probably want some kind of custom data display component here in a list. figure that out later.
+//                 idea: style the whole thing after groupme? */}
+//                 <p>Not loading</p>
+//                 <p key={props.data}>{data}</p>
+//             </Container>
+//         );
+//     }
 // }
 
 function Search() {
@@ -29,7 +56,7 @@ function Search() {
 
     const [error, setError] = useState(null);
     const [loading, setIsLoading] = useState(false);
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<any>([]);
     const [members, setMembers] = useState<Member[]>([]);
     const [quotees, setQuotees] = useState<Quotee[]>([]);
     const [query, setQuery] = useState("");
@@ -57,6 +84,7 @@ function Search() {
         setIsLoading(true);
         fetch("http://localhost:4000/search")
             .then((res) => res.json())
+            .then((res) => console.log(res))
             .then((res) => setData(res))
             .then(() => setIsLoading(false));
     };
@@ -142,12 +170,10 @@ function Search() {
                         </Form>
                     )}
                 </Formik>
-                {/* <Container id="search-results">
-                    <p>{if (loading) return "Loading..."
-                    else return data}</p>
-                    if (loading) <p>Loading...</p>
-                    else <p>{data}</p>
-                </Container> */}
+                {/* <p>{loading}</p> */}
+                <p>{data}</p>
+                {/* <SearchResults loading={loading} data={data} /> */}
+                {/* <SearchResults props={{ loading: loading, data: data }} /> */}
             </Container>
         );
     }
