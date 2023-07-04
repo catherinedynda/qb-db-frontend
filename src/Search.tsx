@@ -17,31 +17,42 @@ import "./Search.css";
 // UPDATE WHEN THE PARENT STATE UPDATES AND I AM ANGY THAT'S LITERALLY ITS JOB
 // OK WE'RE GONNA FIGURE OUT LOADING LATER AND JUST GET RESULTS SHOWING NOW
 // function SearchResults(loading: boolean, data: any) {
-// function SearchResults(props: any) {
-//     const loading = props.loading;
-//     const data = props.data;
+function SearchResults(props: any) {
+    const loading = props.loading;
+    const data = props.data;
 
-//     console.log(`loading: ${loading}`);
-//     console.log(`data: ${data}`);
+    console.log(`loading: ${loading}`);
+    console.log(`data: ${data}`);
 
-//     if (loading) {
-//         return (
-//             <Container>
-//                 {/* TODO: add a spinny thing or something */}
-//                 <p key={props.loading}>Loading...</p>
-//             </Container>
-//         );
-//     } else {
-//         return (
-//             <Container>
-//                 {/* TODO: we probably want some kind of custom data display component here in a list. figure that out later.
-//                 idea: style the whole thing after groupme? */}
-//                 <p>Not loading</p>
-//                 <p key={props.data}>{data}</p>
-//             </Container>
-//         );
-//     }
-// }
+    if (loading) {
+        return (
+            <Container>
+                {/* TODO: add a spinny thing or something */}
+                <p key={props.loading}>Loading...</p>
+            </Container>
+        );
+    } else {
+        return (
+            <Container>
+                {/* TODO: we probably want some kind of custom data display component here in a list. figure that out later.
+                idea: style the whole thing after groupme? */}
+                <p>Not loading</p>
+                <p key={props.data}>{data}</p>
+            </Container>
+        );
+    }
+}
+
+// make this so it takes the whole list of quotes? or ehh idk how much
+// styling I need to do on those so whatever lol
+// possibly extract out to separate file if needed??
+// function QuoteDisplay(quoteObj: any) {
+function QuoteDisplay(quoteObj: any) {
+    const quote = quoteObj.quoteObj;
+    console.log(quote);
+    // return <p className="results">{quoteObj.quote_text}</p>;
+    return <p className="results">{quote.quote_text}</p>;
+}
 
 function Search() {
     interface Member {
@@ -80,11 +91,10 @@ function Search() {
     // or have values be any?
     const submit = (values: object) => {
         console.log("form submitted");
-        console.log({ values });
+        // console.log({ values });
         setIsLoading(true);
         fetch("http://localhost:4000/search")
             .then((res) => res.json())
-            .then((res) => console.log(res))
             .then((res) => setData(res))
             .then(() => setIsLoading(false));
     };
@@ -170,8 +180,19 @@ function Search() {
                         </Form>
                     )}
                 </Formik>
-                {/* <p>{loading}</p> */}
-                <p>{data}</p>
+                <p>{loading}</p>
+                {/* <p>{data}</p> */}
+                {/* <ul>
+                    {data.map((quote: any) => {
+                        return <li key={quote.quote_id}>{quote.quote_text}</li>;
+                    })}
+                </ul> */}
+                <div>
+                    {data.map((quote: any) => {
+                        // return <p className="results">{quote.quote_text}</p>;
+                        return <QuoteDisplay quoteObj={quote} />;
+                    })}
+                </div>
                 {/* <SearchResults loading={loading} data={data} /> */}
                 {/* <SearchResults props={{ loading: loading, data: data }} /> */}
             </Container>
