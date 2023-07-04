@@ -1,0 +1,13 @@
+.Search {
+    text-align: left;
+}
+
+.results {
+    white-space: pre-wrap;
+}
+
+.search-input {
+    font-size: .5rem;
+    padding: 5px;
+    width: 30%;
+}
