@@ -17,7 +17,7 @@ Make sure the backend is running. Also have the right URLs for it in the fronten
     -   [ ] Error state?
     -   [ ] Don't show 0 results on initial load
 
--   [ ] Pagination for fetched quotes
+-   [x] Pagination for fetched quotes
 -   [ ] Make display for fetched quotes
     -   [x] Basic display
     -   [x] Correctly sized avatar
@@ -30,4 +30,5 @@ Make sure the backend is running. Also have the right URLs for it in the fronten
     -   [ ] More thorough and/or of different elements?
 -   [ ] Think more about design
     -   [ ] Fix stuff running into each other, make it more of a responsive grid?
+    -   [ ] Make pagination nicer
 -   [ ] Make stats area? Separate page of app?
