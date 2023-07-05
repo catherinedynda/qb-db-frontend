@@ -23,6 +23,8 @@ Make sure the backend is running. Also have the right URLs for it in the fronten
     -   [x] Correctly sized avatar
     -   [ ] Show EST timezone on timestamps?
     -   [ ] Button to click that will fetch likes for that message
+        -   [x] Show likes
+        -   [ ] Fix likes display and alignment
 -   [ ] Complete desired parts of form
     -   [ ] Date picker (from date to date?)
     -   [ ] More thorough and/or of different elements?

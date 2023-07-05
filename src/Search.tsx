@@ -12,6 +12,10 @@ import Stack from "@mui/material/Stack";
 import SearchIcon from "@mui/icons-material/Search";
 import "./Search.css";
 import SearchResults from "./SearchResults";
+import dotenv from "dotenv";
+dotenv.config();
+// https://codesandbox.io/s/silly-albattani-yk9z4
+// thanks to this guy for how to do forms with Material UI
 
 // TODO: Types To Make
 // a like quote result one
@@ -84,11 +88,11 @@ function Search() {
     const [query, setQuery] = useState("");
 
     useEffect(() => {
-        fetch("http://localhost:4000/members")
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/members`)
             .then((res) => res.json())
             .then((res) => setMembers(res));
         // have parameter for like top however many
-        fetch("http://localhost:4000/quotees")
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/quotees`)
             .then((res) => res.json())
             .then((res) => setQuotees(res));
     }, []);
@@ -110,7 +114,7 @@ function Search() {
             .map(([key, val]) => `${key}=${val}`)
             .join("&");
         console.log(params);
-        fetch(`http://localhost:4000/search?${params}`)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/search?${params}`)
             .then((res) => res.json())
             .then((res) => setData(res))
             .then(() => setIsLoading(false));
