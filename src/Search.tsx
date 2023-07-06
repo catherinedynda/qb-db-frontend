@@ -52,13 +52,14 @@ function Search() {
   const [searched, setSearched] = useState(false);
 
   useEffect(() => {
-    // fetch(`${process.env.REACT_APP_API_BASE_URL}/members`)
-    fetch("http://localhost:4000/members")
+    console.log(process.env.REACT_APP_API_BASE_URL);
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/members`)
+      // fetch("http://localhost:4000/members")
       .then((res) => res.json())
       .then((res) => setMembers(res));
     // have parameter for like top however many
-    // fetch(`${process.env.REACT_APP_API_BASE_URL}/quotees`)
-    fetch("http://localhost:4000/quotees")
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/quotees`)
+      // fetch("http://localhost:4000/quotees")
       .then((res) => res.json())
       .then((res) => setQuotees(res));
   }, []);
@@ -81,8 +82,8 @@ function Search() {
       .map(([key, val]) => `${key}=${val}`)
       .join("&");
     console.log(params);
-    // fetch(`${process.env.REACT_APP_API_BASE_URL}/search?${params}`)
-    fetch(`http://localhost:4000/search?${params}`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/search?${params}`)
+      // fetch(`http://localhost:4000/search?${params}`)
       .then((res) => res.json())
       .then((res) => setData(res))
       .then(() => setIsLoading(false));
