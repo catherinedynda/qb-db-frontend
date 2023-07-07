@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import bcrypt from "bcryptjs";
 import Typography from "@mui/material/Typography";
-import "./App.css";
 import Dialog from "@mui/material/Dialog";
 import Search from "./Search";
 import dotenv from "dotenv";
@@ -10,10 +9,13 @@ import DialogContentText from "@mui/material/DialogContentText";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
+import "./App.css";
 dotenv.config();
 
 function App() {
-  const [verified, setIsVerified] = useState(false);
+  const [verified, setIsVerified] = useState(
+    process.env.REACT_APP_IS_VERIFIED === "true" ? true : false
+  );
   const [password, setPassword] = useState("");
   const [incorrect, setIncorrect] = useState(false);
 
@@ -49,21 +51,31 @@ function App() {
           </DialogContentText>
           {incorrect ? (
             <TextField
+              size="small"
+              margin="normal"
               error
               className="password"
               type="password"
               label="Password"
-              variant="standard"
               helperText="Incorrect password, try again"
               onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") validatePassword();
+              }}
+              inputRef={(input) => input && input.focus()}
             />
           ) : (
             <TextField
+              margin="normal"
+              size="small"
               className="password"
               type="password"
               label="Password"
-              variant="standard"
               onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") validatePassword();
+              }}
+              inputRef={(input) => input && input.focus()}
             />
           )}
           <DialogActions>
