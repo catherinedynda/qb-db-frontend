@@ -58,8 +58,17 @@ function Search() {
 
   const minDate = new Date();
 
+  const headerString = btoa(
+    `${process.env.AUTH_USERNAME}:${process.env.AUTH_PASSWORD}`
+  );
+
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/members`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/members`, {
+      headers: {
+        Authorization: `Basic ${headerString}`,
+      },
+      method: "GET",
+    })
       // fetch("http://localhost:4000/members")
       .then((res) => res.json())
       .then((res) => setMembers(res));
@@ -85,10 +94,9 @@ function Search() {
     setIsLoading(true);
     setSearched(true);
     console.log(values);
-    // NOTE: fix this cause if you reuse dates it blows up about $d not existing
-    if (values.fromDate)
+    if (values.fromDate && values.fromDate.$d)
       values.fromDate = values.fromDate.$d.toISOString().split("T")[0];
-    if (values.toDate)
+    if (values.toDate && values.toDate.$d)
       values.toDate = values.toDate.$d.toISOString().split("T")[0];
     if (values.keyword) values.keyword = encodeURIComponent(values.keyword);
     const params: string = Object.entries(values)
@@ -96,7 +104,11 @@ function Search() {
       .map(([key, val]) => `${key}=${val}`)
       .join("&");
     console.log(params);
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/search?${params}`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/search?${params}`, {
+      headers: {
+        Authorization: `Basic ${headerString}`,
+      },
+    })
       // fetch(`http://localhost:4000/search?${params}`)
       .then((res) => res.json())
       .then((res) => setData(res))
@@ -164,20 +176,26 @@ function Search() {
                 />
                 {/* </FormControl> */}
                 <DatePicker
-                  className="date-picker"
+                  className="date-picker search-input"
                   label="From"
                   timezone="America/New_York"
                   minDate={dayjs("2019-10-31")}
+                  maxDate={dayjs(Date.now())}
+                  openTo="year"
+                  views={["year", "month", "day"]}
                   onChange={(value) => setFieldValue("fromDate", value)}
                   onError={() => {
                     setFieldValue("fromDate", null);
                   }}
                 />
                 <DatePicker
-                  className="date-picker"
+                  className="date-picker search-input"
                   label="To"
                   timezone="America/New_York"
+                  minDate={dayjs("2019-10-31")}
                   maxDate={dayjs(Date.now())}
+                  openTo="year"
+                  views={["year", "month", "day"]}
                   onChange={(value) => setFieldValue("toDate", value)}
                   onError={() => {
                     setFieldValue("toDate", null);
