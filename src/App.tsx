@@ -1,5 +1,7 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "./App.css";
 import Search from "./Search";
 
@@ -11,7 +13,9 @@ function App() {
           IO Quote Board Database
         </Typography>
       </header>
-      <Search></Search>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Search></Search>
+      </LocalizationProvider>
     </div>
   );
 }
