@@ -31,7 +31,7 @@ function SearchResults(props: any) {
   const itemsPerPage = 10;
 
   const headerString = btoa(
-    `${process.env.AUTH_USERNAME}:${process.env.AUTH_PASSWORD}`
+    `${process.env.REACT_APP_AUTH_USERNAME}:${process.env.REACT_APP_AUTH_PASSWORD}`
   );
 
   // figure out why it does it like that?

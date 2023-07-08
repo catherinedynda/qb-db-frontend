@@ -59,7 +59,7 @@ function Search() {
   const minDate = new Date();
 
   const headerString = btoa(
-    `${process.env.AUTH_USERNAME}:${process.env.AUTH_PASSWORD}`
+    `${process.env.REACT_APP_AUTH_USERNAME}:${process.env.REACT_APP_AUTH_PASSWORD}`
   );
 
   useEffect(() => {
@@ -69,12 +69,12 @@ function Search() {
       },
       method: "GET",
     })
-      // fetch("http://localhost:4000/members")
       .then((res) => res.json())
       .then((res) => setMembers(res));
     // have parameter for like top however many
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/quotees`)
-      // fetch("http://localhost:4000/quotees")
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/quotees`, {
+      headers: { Authorization: `Basic ${headerString}` },
+    })
       .then((res) => res.json())
       .then((res) => setQuotees(res));
   }, []);
@@ -90,7 +90,6 @@ function Search() {
   // or have values be any?
   const submit = (values: any) => {
     console.log("form submitted");
-    // console.log({ values });
     setIsLoading(true);
     setSearched(true);
     console.log(values);
@@ -109,7 +108,6 @@ function Search() {
         Authorization: `Basic ${headerString}`,
       },
     })
-      // fetch(`http://localhost:4000/search?${params}`)
       .then((res) => res.json())
       .then((res) => setData(res))
       .then(() => setIsLoading(false));
