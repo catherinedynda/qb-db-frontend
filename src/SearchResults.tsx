@@ -22,6 +22,8 @@ const processTime = (time: any) => {
 };
 
 function SearchResults(props: any) {
+  // TODO: page doesn't reset when there's new data...
+  // possibly set page as a prop...? then the pagination is controlled by parent component
   const [expandedId, setExpandedId] = useState(-1);
   const [likes, setLikes] = useState([]);
   const [page, setPage] = useState(1);
@@ -45,8 +47,8 @@ function SearchResults(props: any) {
     console.log(id);
     setExpandedId(expandedId === id ? -1 : id);
     if (expandedId === -1) setLikes([]);
-    // fetch(`${process.env.REACT_APP_API_BASE_URL}/likes?quote_id=${id}`)
-    fetch(`http://localhost:4000/likes?quote_id=${id}`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/likes?quote_id=${id}`)
+      // fetch(`http://localhost:4000/likes?quote_id=${id}`)
       .then((res) => res.json())
       .then((res) => setLikes(res));
   };

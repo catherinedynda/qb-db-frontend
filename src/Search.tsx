@@ -7,9 +7,12 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Input from "@mui/material/Input";
 import InputAdornment from "@mui/material/InputAdornment";
-import InputLabel from "@mui/material/InputLabel";
 import Stack from "@mui/material/Stack";
 import SearchIcon from "@mui/icons-material/Search";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import "./Search.css";
 import SearchResults from "./SearchResults";
 import dotenv from "dotenv";
@@ -20,6 +23,9 @@ dotenv.config();
 // TODO: Types To Make
 // a like quote result one
 // a params one?
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 // make this so it takes the whole list of quotes? or ehh idk how much
 // styling I need to do on those so whatever lol
@@ -48,25 +54,28 @@ function Search() {
   const [data, setData] = useState<any>([]);
   const [members, setMembers] = useState<Member[]>([]);
   const [quotees, setQuotees] = useState<Quotee[]>([]);
-  const [query, setQuery] = useState("");
   const [searched, setSearched] = useState(false);
 
+  const minDate = new Date();
+
   useEffect(() => {
-    // fetch(`${process.env.REACT_APP_API_BASE_URL}/members`)
-    fetch("http://localhost:4000/members")
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/members`)
+      // fetch("http://localhost:4000/members")
       .then((res) => res.json())
       .then((res) => setMembers(res));
     // have parameter for like top however many
-    // fetch(`${process.env.REACT_APP_API_BASE_URL}/quotees`)
-    fetch("http://localhost:4000/quotees")
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/quotees`)
+      // fetch("http://localhost:4000/quotees")
       .then((res) => res.json())
       .then((res) => setQuotees(res));
   }, []);
 
+  // you don't actually need to put new guys in here apparently
   const initialValues = {
     keyword: "",
     member: null,
     quotee: null,
+    fromDate: null,
   };
 
   // or have values be any?
@@ -76,13 +85,19 @@ function Search() {
     setIsLoading(true);
     setSearched(true);
     console.log(values);
+    // NOTE: fix this cause if you reuse dates it blows up about $d not existing
+    if (values.fromDate)
+      values.fromDate = values.fromDate.$d.toISOString().split("T")[0];
+    if (values.toDate)
+      values.toDate = values.toDate.$d.toISOString().split("T")[0];
+    if (values.keyword) values.keyword = encodeURIComponent(values.keyword);
     const params: string = Object.entries(values)
       .filter(([key, val]) => val !== null && val !== "")
       .map(([key, val]) => `${key}=${val}`)
       .join("&");
     console.log(params);
-    // fetch(`${process.env.REACT_APP_API_BASE_URL}/search?${params}`)
-    fetch(`http://localhost:4000/search?${params}`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/search?${params}`)
+      // fetch(`http://localhost:4000/search?${params}`)
       .then((res) => res.json())
       .then((res) => setData(res))
       .then(() => setIsLoading(false));
@@ -148,6 +163,26 @@ function Search() {
                   )}
                 />
                 {/* </FormControl> */}
+                <DatePicker
+                  className="date-picker"
+                  label="From"
+                  timezone="America/New_York"
+                  minDate={dayjs("2019-10-31")}
+                  onChange={(value) => setFieldValue("fromDate", value)}
+                  onError={() => {
+                    setFieldValue("fromDate", null);
+                  }}
+                />
+                <DatePicker
+                  className="date-picker"
+                  label="To"
+                  timezone="America/New_York"
+                  maxDate={dayjs(Date.now())}
+                  onChange={(value) => setFieldValue("toDate", value)}
+                  onError={() => {
+                    setFieldValue("toDate", null);
+                  }}
+                />
               </Stack>
               <Button variant="contained" type="submit">
                 Search
