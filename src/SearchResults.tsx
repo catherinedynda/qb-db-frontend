@@ -30,6 +30,10 @@ function SearchResults(props: any) {
 
   const itemsPerPage = 10;
 
+  const headerString = btoa(
+    `${process.env.REACT_APP_AUTH_USERNAME}:${process.env.REACT_APP_AUTH_PASSWORD}`
+  );
+
   // figure out why it does it like that?
   props = props.props;
   const { loading, searched, data } = props;
@@ -47,7 +51,11 @@ function SearchResults(props: any) {
     console.log(id);
     setExpandedId(expandedId === id ? -1 : id);
     if (expandedId === -1) setLikes([]);
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/likes?quote_id=${id}`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/likes?quote_id=${id}`, {
+      headers: {
+        Authorization: `Basic ${headerString}`,
+      },
+    })
       // fetch(`http://localhost:4000/likes?quote_id=${id}`)
       .then((res) => res.json())
       .then((res) => setLikes(res));
