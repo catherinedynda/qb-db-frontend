@@ -114,22 +114,24 @@ function SearchResults(props: any) {
                       <em>{processTime(quote.time)}</em>
                     </Typography>
                   </CardContent>
-                  <CardActions disableSpacing className="actions rightAlign">
-                    <Button onClick={() => handleExpandClick(quote.quote_id)}>
-                      <FavoriteIcon /> See likes
-                    </Button>
-                  </CardActions>
-                  <Collapse in={expandedId === quote.quote_id}>
-                    <CardContent>
-                      <ul>
-                        {likes.map((like: any) => {
-                          return (
-                            <li key={like.member_id}>{like.display_name}</li>
-                          );
-                        })}
-                      </ul>
-                    </CardContent>
-                  </Collapse>
+                  <CardContent>
+                    <CardActions disableSpacing className="actions rightAlign">
+                      <Button onClick={() => handleExpandClick(quote.quote_id)}>
+                        <FavoriteIcon /> See likes
+                      </Button>
+                    </CardActions>
+                    <Collapse in={expandedId === quote.quote_id}>
+                      <CardContent>
+                        <ul className="actions">
+                          {likes.map((like: any) => {
+                            return (
+                              <li key={like.member_id}>{like.display_name}</li>
+                            );
+                          })}
+                        </ul>
+                      </CardContent>
+                    </Collapse>
+                  </CardContent>
                 </Card>
               );
             })}

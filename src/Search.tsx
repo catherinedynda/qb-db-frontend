@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Input from "@mui/material/Input";
 import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
+import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
@@ -16,6 +18,7 @@ import timezone from "dayjs/plugin/timezone";
 import "./Search.css";
 import SearchResults from "./SearchResults";
 import dotenv from "dotenv";
+import FormControlLabel from "@mui/material/FormControlLabel";
 dotenv.config();
 // https://codesandbox.io/s/silly-albattani-yk9z4
 // thanks to this guy for how to do forms with Material UI
@@ -84,7 +87,7 @@ function Search() {
     keyword: "",
     member: null,
     quotee: null,
-    fromDate: null,
+    limit: "on",
   };
 
   // or have values be any?
@@ -200,8 +203,24 @@ function Search() {
                   }}
                 />
               </Stack>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    defaultChecked
+                    className="search-input"
+                    id="limit"
+                    name="limit"
+                    onChange={handleChange}
+                  />
+                }
+                label="Limit"
+              />
               <Button variant="contained" type="submit">
                 Search
+              </Button>
+              <Button variant="outlined">
+                <CloseIcon />
+                Clear search
               </Button>
             </Form>
           )}
