@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Input from "@mui/material/Input";
 import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
+import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
@@ -16,6 +18,13 @@ import timezone from "dayjs/plugin/timezone";
 import "./Search.css";
 import SearchResults from "./SearchResults";
 import dotenv from "dotenv";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import RadioGroup from "@mui/material/RadioGroup";
+import Radio from "@mui/material/Radio";
 dotenv.config();
 // https://codesandbox.io/s/silly-albattani-yk9z4
 // thanks to this guy for how to do forms with Material UI
@@ -84,7 +93,10 @@ function Search() {
     keyword: "",
     member: null,
     quotee: null,
-    fromDate: null,
+    limit: "on",
+    sortby: "date",
+    direction: "desc",
+    case: "on",
   };
 
   // or have values be any?
@@ -121,107 +133,172 @@ function Search() {
         <Formik initialValues={initialValues} onSubmit={submit}>
           {({ handleChange, values, setFieldValue }) => (
             <Form>
-              <Stack direction="row">
-                <Input
-                  id="search-keyword"
-                  name="keyword"
-                  className="search-input"
-                  placeholder="Keyword"
-                  size="small"
-                  onChange={handleChange}
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  }
-                />
-                <Autocomplete
-                  disablePortal
-                  id="member-select"
-                  // name="member"
-                  className="search-input"
-                  size="small"
-                  options={members}
-                  getOptionLabel={(option) => option.name}
-                  onChange={(e, value) => {
-                    console.log(value);
-                    setFieldValue(
-                      "member",
-                      value !== null ? value.member_id : initialValues.member
-                    );
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} name="member" label="From member" />
-                  )}
-                />
-                <Autocomplete
-                  disablePortal
-                  id="quotee-select"
-                  className="search-input"
-                  size="small"
-                  options={quotees}
-                  getOptionLabel={(option) => option.name}
-                  onChange={(e, value) => {
-                    console.log(value);
-                    setFieldValue(
-                      "quotee",
-                      value !== null ? value.person_id : initialValues.quotee
-                    );
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} name="quotee" label="Quotee" />
-                  )}
-                />
-                {/* </FormControl> */}
-                <DatePicker
-                  className="date-picker search-input"
-                  label="From"
-                  timezone="America/New_York"
-                  minDate={dayjs("2019-10-31")}
-                  maxDate={dayjs(Date.now())}
-                  openTo="year"
-                  views={["year", "month", "day"]}
-                  onChange={(value) => setFieldValue("fromDate", value)}
-                  onError={() => {
-                    setFieldValue("fromDate", null);
-                  }}
-                />
-                <DatePicker
-                  className="date-picker search-input"
-                  label="To"
-                  timezone="America/New_York"
-                  minDate={dayjs("2019-10-31")}
-                  maxDate={dayjs(Date.now())}
-                  openTo="year"
-                  views={["year", "month", "day"]}
-                  onChange={(value) => setFieldValue("toDate", value)}
-                  onError={() => {
-                    setFieldValue("toDate", null);
-                  }}
-                />
-              </Stack>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6} md={4}>
+                  <Input
+                    id="search-keyword"
+                    name="keyword"
+                    className="search-input"
+                    placeholder="Keyword"
+                    size="small"
+                    onChange={handleChange}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    }
+                  />
+                </Grid>
+                <Grid item xs={3} sm={2} md={1}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        defaultChecked
+                        className="search-input"
+                        id="case"
+                        name="case"
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Case"
+                  />
+                </Grid>
+                <Grid item xs={4} md={3} lg={2}>
+                  <Autocomplete
+                    disablePortal
+                    id="member-select"
+                    // name="member"
+                    className="search-input"
+                    size="small"
+                    options={members}
+                    getOptionLabel={(option) => option.name}
+                    onChange={(e, value) => {
+                      console.log(value);
+                      setFieldValue(
+                        "member",
+                        value !== null ? value.member_id : initialValues.member
+                      );
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        name="member"
+                        label="From member"
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={4} md={3} lg={2}>
+                  <Autocomplete
+                    disablePortal
+                    id="quotee-select"
+                    className="search-input"
+                    size="small"
+                    options={quotees}
+                    getOptionLabel={(option) => option.name}
+                    onChange={(e, value) => {
+                      console.log(value);
+                      setFieldValue(
+                        "quotee",
+                        value !== null ? value.person_id : initialValues.quotee
+                      );
+                    }}
+                    renderInput={(params) => (
+                      <TextField {...params} name="quotee" label="Quotee" />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={4} md={3}>
+                  <DatePicker
+                    className="date-picker search-input"
+                    label="From"
+                    timezone="America/New_York"
+                    minDate={dayjs("2019-10-31")}
+                    maxDate={dayjs(Date.now())}
+                    openTo="year"
+                    views={["year", "month", "day"]}
+                    onChange={(value) => setFieldValue("fromDate", value)}
+                    onError={() => {
+                      setFieldValue("fromDate", null);
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={4} md={3}>
+                  <DatePicker
+                    className="date-picker search-input"
+                    label="To"
+                    timezone="America/New_York"
+                    minDate={dayjs("2019-10-31")}
+                    maxDate={dayjs(Date.now())}
+                    openTo="year"
+                    views={["year", "month", "day"]}
+                    onChange={(value) => setFieldValue("toDate", value)}
+                    onError={() => {
+                      setFieldValue("toDate", null);
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <TextField
+                    className="search-input"
+                    name="sortby"
+                    size="small"
+                    defaultValue=""
+                    onChange={handleChange}
+                    select
+                    label="Sort by..."
+                  >
+                    <MenuItem key={1} value="date">
+                      Date
+                    </MenuItem>
+                    <MenuItem key={2} value="likes">
+                      Likes
+                    </MenuItem>
+                  </TextField>
+                </Grid>
+                <Grid item>
+                  <RadioGroup
+                    row
+                    defaultValue="desc"
+                    name="direction"
+                    onChange={handleChange}
+                  >
+                    <FormControlLabel
+                      value="asc"
+                      control={<Radio />}
+                      label="Asc"
+                    />
+                    <FormControlLabel
+                      value="desc"
+                      control={<Radio />}
+                      label="Desc"
+                    />
+                  </RadioGroup>
+                </Grid>
+              </Grid>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    defaultChecked
+                    className="search-input"
+                    id="limit"
+                    name="limit"
+                    onChange={handleChange}
+                  />
+                }
+                label="Limit"
+              />
               <Button variant="contained" type="submit">
                 Search
+              </Button>
+              <Button variant="outlined">
+                <CloseIcon />
+                Clear search
               </Button>
             </Form>
           )}
         </Formik>
-        {/* <p>{data}</p> */}
-        {/* <ul>
-                    {data.map((quote: any) => {
-                        return <li key={quote.quote_id}>{quote.quote_text}</li>;
-                    })}
-                </ul> */}
-        {/* <div>
-                    {data.map((quote: any) => {
-                        // return <p className="results">{quote.quote_text}</p>;
-                        return <QuoteDisplay quoteObj={quote} />;
-                    })}
-                </div> */}
-        {/* <SearchResults loading={loading} data={data} /> */}
-        <SearchResults
-          props={{ loading: loading, searched: searched, data: data }}
-        />
+        <SearchResults loading={loading} searched={searched} data={data} />
       </Container>
     );
   }
