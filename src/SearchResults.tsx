@@ -35,7 +35,7 @@ function SearchResults(props: any) {
   );
 
   // figure out why it does it like that?
-  props = props.props;
+  // props = props.props;
   const { loading, searched, data } = props;
   console.log(data);
   if (data.length) {
